@@ -1,11 +1,14 @@
+import customtkinter as ctk 
 import os
-import tkinter as tk
 from tkinter import messagebox
 import requests
 import json
 import csv
 from datetime import datetime
 from config import API_KEY
+
+ctk.set_appearance_mode("system")
+ctk.set_default_color_theme(blue)
 
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
@@ -59,28 +62,45 @@ def on_fetch():
         messagebox.showerror("Request Error", f"Network error: {err}")
 
 
-root = tk.Tk()
+root = ctk.CTk()
 root.title("Weather App")
-root.geometry("500x400")
+root.geometry("500x550")
 
-label = tk.Label(root, text="Welcome to my Weather App")
-label.pack(pady=20)
+# label = tk.Label(root, text="Welcome to my Weather App")
+# label.pack(pady=20)
 
-frame = tk.Frame(root)
-frame.pack(pady=10)
+welcome_label = ctk.CTkLabel(
+root,
+text="Weather App",
+font=("Roboto", 24)    
+)
+welcome_label.pack(pady=20)
 
-placeholder_text = "Enter city name"
-city_entry = tk.Entry(frame, width=30)
-city_entry.insert(0, placeholder_text)
-city_entry.bind("<FocusIn>", lambda e: city_entry.delete(0, tk.END) if city_entry.get() == placeholder_text else None)
-city_entry.bind("<FocusOut>", lambda e: city_entry.insert(0, placeholder_text) if not city_entry.get() else None)
-city_entry.pack(side=tk.LEFT, padx=(0, 10))
+frame = ctk.CTkFrame(root)
+frame.pack(pady=10, padx=20, fill="x")
 
-fetch_button = tk.Button(frame, text="Fetch Weather", command=on_fetch)
-fetch_button.pack(side=tk.LEFT)
+city_entry = ctk.CTkEntry(
+    frame,
+    placeholder_text="Enter city name",
+    width=200
+)
+city_entry.pack(side="left", padx=(0, 10))
 
-result_text = tk.Text(root, height=15, width=60, state=tk.DISABLED)
-result_text.pack(pady=10)
+fetch_button = ctk.CTkButton(
+    frame, 
+    text="Fetch Weather", 
+    command=on_fetch
+    )
+
+fetch_button.pack(side="left")
+
+result_text = ctk.CTkTextbox(
+    root, 
+    width=450, 
+    height=300, 
+    )
+result_text.config(state="disabled")
+result_text.pack(pady=10, padx=20)
 
 """"-- Create tables
 CREATE TABLE locations (
