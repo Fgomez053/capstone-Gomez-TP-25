@@ -1,14 +1,11 @@
 import customtkinter as ctk 
-import os
 from tkinter import messagebox
-import requests
-import json
-import csv
+import requests, json, csv, os
 from datetime import datetime
 from config import API_KEY
 
 ctk.set_appearance_mode("system")
-ctk.set_default_color_theme(blue)
+ctk.set_default_color_theme("blue")
 
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
@@ -44,62 +41,59 @@ def fetch_weather(city: str) -> dict:
     return response.json()
 
 def on_fetch():
-    city = city_entry.get().strip()
+    city = entry_city.get().strip()
     if not city:
         messagebox.showwarning("Input Error", "Please enter a city name.")
         return
     try:
         data = fetch_weather(city)
-        save_weather_entry(data)
+    except Exception as e:
+        messagebox.showerror("Fetch Error", str(e))
+        return
+    
+    pretty = json.dumps(data, indent=2)
         
-        result_text.config(state=tk.NORMAL)
-        result_text.delete("1.0", tk.END)
-        result_text.insert(tk.END, json.dumps(data, indent=2))
-        result_text.config(state=tk.DISABLED)
-    except requests.exceptions.HTTPError as http_err:
-        messagebox.showerror("HTTP Error", f"Error fetching data: {http_err}")
-    except requests.exceptions.RequestException as err:
-        messagebox.showerror("Request Error", f"Network error: {err}")
+    result_text.configure(state="normal")
+    result_text.delete("0.0", "end")
+    result_text.insert("0.0", pretty)
+    result_text.configure(state="disabled")
 
+
+
+def toggle_theme():
+    mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
+    ctk.set_appearance_mode(mode
+    )
 
 root = ctk.CTk()
 root.title("Weather App")
-root.geometry("500x550")
+root.geometry("500x600")
+
+theme_switch = ctk.CTkSwitch(root, text="Dark Mode", command=toggle_theme)
+theme_switch.pack(pady=10)
+
 
 # label = tk.Label(root, text="Welcome to my Weather App")
 # label.pack(pady=20)
 
-welcome_label = ctk.CTkLabel(
-root,
-text="Weather App",
-font=("Roboto", 24)    
-)
-welcome_label.pack(pady=20)
+lbl_title = ctk.CTkLabel(root, text="Weather App", font=(None, 24))
+lbl_title.pack(pady=10)
 
-frame = ctk.CTkFrame(root)
-frame.pack(pady=10, padx=20, fill="x")
+frame_input = ctk.CTkFrame(root)
+frame_input.pack(pady=10, padx=20, fill="x")
 
-city_entry = ctk.CTkEntry(
-    frame,
-    placeholder_text="Enter city name",
-    width=200
-)
-city_entry.pack(side="left", padx=(0, 10))
+entry_city = ctk.CTkEntry(frame_input, placeholder_text="City name", width=200)
+entry_city.pack(side="left", padx=(0, 10))
 
-fetch_button = ctk.CTkButton(
-    frame, 
-    text="Fetch Weather", 
-    command=on_fetch
-    )
-
-fetch_button.pack(side="left")
+btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
+btn_fetch.pack(side="left")
 
 result_text = ctk.CTkTextbox(
     root, 
     width=450, 
     height=300, 
     )
-result_text.config(state="disabled")
+result_text.configure(state="disabled")
 result_text.pack(pady=10, padx=20)
 
 """"-- Create tables
