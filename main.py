@@ -64,7 +64,13 @@ def toggle_theme():
     mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
     ctk.set_appearance_mode(mode
     )
+def clear_fields():
+    entry_city.delete(0, "end")
+    result_text.configure(state="normal")
+    result_text.delete("0.0", "end")
+    result_text.configure(state="disabled")
 
+    
 root = ctk.CTk()
 root.title("Weather App")
 root.geometry("500x600")
@@ -95,6 +101,13 @@ result_text = ctk.CTkTextbox(
     )
 result_text.configure(state="disabled")
 result_text.pack(pady=10, padx=20)
+
+clear_button = ctk.CTkButton(
+    frame_input,
+    text="Clear",
+    command=clear_fields
+)
+clear_button.pack(side="left", padx=(10, 0))
 
 """"-- Create tables
 CREATE TABLE locations (
