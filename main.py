@@ -51,14 +51,30 @@ def on_fetch():
         messagebox.showerror("Fetch Error", str(e))
         return
     
-    pretty = json.dumps(data, indent=2)
-        
+
+    
+    
+    name = data.get("name","Unknow")
+    main = data.get("main", {})
+    temp = main.get("temp", "N/A")
+    humidity = main.get("humidity", "N/A")
+    pressure = main.get("pressure", "N/A")
+    desc = data.get("weather", [{}])[0].get("description", "N/A").title()
+
+    display = (
+        f"City: {name}\n"
+        f"Temperature: {temp}F\n"
+        f"Condition: {desc}\n"
+        f"Humidity: {humidity}%\n"
+        f"Pressure: {pressure} hPa\n"
+    )
+
     result_text.configure(state="normal")
     result_text.delete("0.0", "end")
-    result_text.insert("0.0", pretty)
+    result_text.insert("0.0", display)
     result_text.configure(state="disabled")
 
-
+    save_weather_entry(data)
 
 def toggle_theme():
     mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
@@ -108,6 +124,10 @@ clear_button = ctk.CTkButton(
     command=clear_fields
 )
 clear_button.pack(side="left", padx=(10, 0))
+
+results_frame = ctk.CTkFrame(root)
+results_frame.pack(pady=10, padx=20, fill="x")
+
 
 """"-- Create tables
 CREATE TABLE locations (
