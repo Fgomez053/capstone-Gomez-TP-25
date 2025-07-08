@@ -9,6 +9,8 @@ ctk.set_default_color_theme("blue")
 
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
+current_unit = "F"
+last_temp = None
 
 def init_csv():
     os.makedirs(data_dir, exist_ok=True)
