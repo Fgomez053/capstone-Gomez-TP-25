@@ -18,9 +18,13 @@ def init_csv():
         with open(csv_file, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow([
-                "timestamp", "city", "temp_F", "humidity", "pressure", "description"
+                "timestamp",
+                 "city", "temp_F", "humidity", "pressure", "description"
             ])
 
+
+
+#try containers, and add tabs,...create file to import colors and themes, look into boilerplates for theme colors
 def save_weather_entry(data: dict):
     init_csv()
     timestamp = datetime.now().isoformat()
@@ -111,7 +115,7 @@ entry_city.pack(side="left", padx=(0, 10))
 
 btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
 btn_fetch.pack(side="left")
-
+#result display box
 result_text = ctk.CTkTextbox(
     root, 
     width=450, 
