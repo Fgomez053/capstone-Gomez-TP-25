@@ -4,8 +4,14 @@ import requests, json, csv, os
 from datetime import datetime
 from config import API_KEY
 
-ctk.set_appearance_mode("system")
-ctk.set_default_color_theme("blue")
+#fetching dark/light features
+from weather_app.features.dark_theme import create_dark_theme_toggle
+
+ctk.set_appearance_mode("Light")
+ctk.set_default_color_theme("data/my_ctkcolor.json")
+
+
+
 
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
@@ -82,10 +88,10 @@ def on_fetch():
 
     save_weather_entry(data)
 
-def toggle_theme():
-    mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
-    ctk.set_appearance_mode(mode
-    )
+# def toggle_theme():
+#     mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
+#     ctk.set_appearance_mode(mode
+#     )
 def clear_fields():
     entry_city.delete(0, "end")
     result_text.configure(state="normal")
@@ -97,8 +103,11 @@ root = ctk.CTk()
 root.title("Weather App")
 root.geometry("500x600")
 
-theme_switch = ctk.CTkSwitch(root, text="Dark Mode", command=toggle_theme)
-theme_switch.pack(pady=10)
+#creating the call
+create_dark_theme_toggle(root)
+
+# theme_switch = ctk.CTkSwitch(root, text="Dark Mode", command=toggle_theme)
+# theme_switch.pack(pady=10)
 
 
 # label = tk.Label(root, text="Welcome to my Weather App")
