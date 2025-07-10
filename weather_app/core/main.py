@@ -2,15 +2,17 @@ import customtkinter as ctk
 from tkinter import messagebox
 import requests, json, csv, os
 from datetime import datetime
-from config import API_KEY
+from weather_app.config import API_KEY
+from pathlib import Path
 
 #fetching dark/light features
 from weather_app.features.dark_theme import create_dark_theme_toggle
 
-ctk.set_appearance_mode("Light")
-ctk.set_default_color_theme("data/my_ctkcolor.json")
+ctk.set_appearance_mode("System")
+# ctk.set_default_color_theme("data/my_ctkcolor.json")
 
-
+theme_path = Path(__file__).parent.parent / "data" / "my_ctkcolor.json"
+ctk.set_default_color_theme(str(theme_path))
 
 
 data_dir = "data"
