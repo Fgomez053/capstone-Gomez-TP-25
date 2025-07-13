@@ -2,7 +2,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-env_path = Path(__file__).resolve().parent / ".env"
+# Looks for .env inside the core/ subfolder instead of beside config.py
+
+env_path = Path(__file__).resolve().parent / "core" / ".env"
 if not env_path.exists():
     raise RuntimeError(f"'.env' file not found at {env_path}")
 

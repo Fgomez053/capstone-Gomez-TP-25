@@ -1,20 +1,43 @@
+import sys, os
+# so that main can be ran thru core
+# project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+# sys.path.insert(0, project_root)
+
+from pathlib import Path
 import customtkinter as ctk 
 from tkinter import messagebox
-import requests, json, csv, os
+import requests, json, csv
 from datetime import datetime
-from weather_app.config import API_KEY
-from pathlib import Path
+from config import API_KEY
+
+
+
 
 #fetching dark/light features
-from weather_app.features.dark_theme import create_dark_theme_toggle
+from features.dark_theme import create_dark_theme_toggle
+
+from core.api import fetch_weather
+from core.storage import save_weather_entry
 
 ctk.set_appearance_mode("System")
 # ctk.set_default_color_theme("data/my_ctkcolor.json")
 
-theme_path = Path(__file__).parent.parent / "data" / "my_ctkcolor.json"
+theme_path = Path(__file__).parent / "data" / "my_ctkcolor.json"
 ctk.set_default_color_theme(str(theme_path))
 
+# creating a path so py can locate weather_app.configanywhere
 
+def main():
+    ctk.set_appearance_mode("System")
+    ctk.set_default_color_theme("blue")
+
+    root = ctk.CTk()
+    # … build your GUI …
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()
+    
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
 current_unit = "F"
@@ -46,13 +69,13 @@ def save_weather_entry(data: dict):
         writer = csv.writer(f)
         writer.writerow([timestamp, city, temp, humidity, pressure, description])
 
-def fetch_weather(city: str) -> dict:
-    if not API_KEY:
-        raise RuntimeError("Missing API key. Please set API_KEY in your .env file.")
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=imperial"
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()
+# def fetch_weather(city: str) -> dict:
+#     if not API_KEY:
+#         raise RuntimeError("Missing API key. Please set API_KEY in your .env file.")
+#     url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=imperial"
+#     response = requests.get(url)
+#     response.raise_for_status()
+#     return response.json()
 
 def on_fetch():
     city = entry_city.get().strip()
@@ -64,9 +87,6 @@ def on_fetch():
     except Exception as e:
         messagebox.showerror("Fetch Error", str(e))
         return
-    
-
-    
     
     name = data.get("name","Unknow")
     main = data.get("main", {})
@@ -90,10 +110,6 @@ def on_fetch():
 
     save_weather_entry(data)
 
-# def toggle_theme():
-#     mode = "Dark" if ctk.get_appearance_mode()=="Light" else "Light"
-#     ctk.set_appearance_mode(mode
-#     )
 def clear_fields():
     entry_city.delete(0, "end")
     result_text.configure(state="normal")
@@ -108,12 +124,6 @@ root.geometry("500x600")
 #creating the call
 create_dark_theme_toggle(root)
 
-# theme_switch = ctk.CTkSwitch(root, text="Dark Mode", command=toggle_theme)
-# theme_switch.pack(pady=10)
-
-
-# label = tk.Label(root, text="Welcome to my Weather App")
-# label.pack(pady=20)
 
 lbl_title = ctk.CTkLabel(root, text="Weather App", font=(None, 24))
 lbl_title.pack(pady=10)
@@ -146,32 +156,6 @@ results_frame = ctk.CTkFrame(root)
 results_frame.pack(pady=10, padx=20, fill="x")
 
 
-""""-- Create tables
-CREATE TABLE locations (
-    location_id INTEGER PRIMARY KEY,
-    city TEXT NOT NULL,
-    state TEXT NOT NULL,
-    country TEXT NOT NULL,
-    latitude REAL NOT NULL,
-    longitude REAL NOT NULL
-);
-CREATE TABLE weather_stations (
-    station_id INTEGER PRIMARY KEY,
-    station_name TEXT NOT NULL,
-    location_id INTEGER NOT NULL,
-    elevation REAL NOT NULL,
-    FOREIGN KEY (location_id) REFERENCES locations(location_id)
-);
-CREATE TABLE weather_readings (
-    reading_id INTEGER PRIMARY KEY,
-    station_id INTEGER NOT NULL,
-    temperature REAL NOT NULL,
-    humidity REAL NOT NULL,
-    pressure REAL NOT NULL,
-    precipitation REAL NOT NULL,
-    reading_date TEXT NOT NULL,
-    FOREIGN KEY (station_id) REFERENCES weather_stations(station_id)
-);
-"""
+
 root.mainloop()
 
