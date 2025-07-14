@@ -27,21 +27,50 @@ ctk.set_default_color_theme(str(theme_path))
 
 # creating a path so py can locate weather_app.configanywhere
 
-def main():
-    ctk.set_appearance_mode("System")
-    ctk.set_default_color_theme("blue")
+# def main():
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 
-    root = ctk.CTk()
+root = ctk.CTk()
+
+root.title("Weather App")
+root.geometry("500x600")
+
     # … build your GUI …
-    root.mainloop()
+    # root.mainloop()
+create_dark_theme_toggle(root)
 
-if __name__ == "__main__":
-    main()
+
+lbl_title = ctk.CTkLabel(root, text="Weather App", font=(None, 24))
+lbl_title.pack(pady=10)
+
+frame_input = ctk.CTkFrame(root)
+frame_input.pack(pady=10, padx=20, fill="x")
+
+entry_city = ctk.CTkEntry(frame_input, placeholder_text="City name", width=200)
+entry_city.pack(side="left", padx=(0, 10))
+
+#result display box
+result_text = ctk.CTkTextbox(
+    root, 
+    width=450, 
+    height=300, 
+    )
+result_text.configure(state="disabled")
+result_text.pack(pady=10, padx=20)
+
+
+results_frame = ctk.CTkFrame(root)
+results_frame.pack(pady=10, padx=20, fill="x")
+
+
+
     
 data_dir = "data"
 csv_file = os.path.join(data_dir, "weather_history.csv")
 current_unit = "F"
 last_temp = None
+
 
 def init_csv():
     os.makedirs(data_dir, exist_ok=True)
@@ -110,52 +139,33 @@ def on_fetch():
 
     save_weather_entry(data)
 
+# GUI BUTTON
+btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
+btn_fetch.pack(side="left")
+
 def clear_fields():
     entry_city.delete(0, "end")
     result_text.configure(state="normal")
     result_text.delete("0.0", "end")
     result_text.configure(state="disabled")
 
-    
-root = ctk.CTk()
-root.title("Weather App")
-root.geometry("500x600")
+    # GUI BUTTON
+clear_button = ctk.CTkButton(
+        frame_input,
+        text="Clear",
+        command=clear_fields
+    )
+# root = ctk.CTk()
+# root.title("Weather App")
+# root.geometry("500x600")
 
 #creating the call
-create_dark_theme_toggle(root)
 
-
-lbl_title = ctk.CTkLabel(root, text="Weather App", font=(None, 24))
-lbl_title.pack(pady=10)
-
-frame_input = ctk.CTkFrame(root)
-frame_input.pack(pady=10, padx=20, fill="x")
-
-entry_city = ctk.CTkEntry(frame_input, placeholder_text="City name", width=200)
-entry_city.pack(side="left", padx=(0, 10))
-
-btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
-btn_fetch.pack(side="left")
-#result display box
-result_text = ctk.CTkTextbox(
-    root, 
-    width=450, 
-    height=300, 
-    )
-result_text.configure(state="disabled")
-result_text.pack(pady=10, padx=20)
-
-clear_button = ctk.CTkButton(
-    frame_input,
-    text="Clear",
-    command=clear_fields
-)
 clear_button.pack(side="left", padx=(10, 0))
 
-results_frame = ctk.CTkFrame(root)
-results_frame.pack(pady=10, padx=20, fill="x")
+if __name__ == "__main__":
+    
+    # main()
 
 
-
-root.mainloop()
-
+    root.mainloop()
