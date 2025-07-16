@@ -39,3 +39,7 @@ timestamp,city,temp_F,humidity,pressure,description
 2025-07-14T03:12:51.617045,Los Angeles,60.24,60.24,92,1014,mist
 2025-07-14T03:14:16.317029,Los Angeles,60.71,60.71,89,1014,mist
 2025-07-14T03:14:43.269630,Los Angeles,60.71,89,1014,mist
+2025-07-14T03:29:04.499313,Los Angeles,60.96,60.96,89,1014,mist
+2025-07-14T03:36:15.514752,Los Angeles,60.96,89,1014,mist
+2025-07-15T11:20:26.102005,Los Angeles,72.23,69,1015,overcast clouds
+2025-07-15T12:03:49.649014,Sacramento,80.4,48,1011,clear sky
