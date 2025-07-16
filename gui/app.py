@@ -34,6 +34,8 @@ def start_app():
     root.title("Weather App")
     root.geometry("500x600")
 
+    create_dark_theme_toggle(root)
+
     # the Title
     lbl_title = ctk.CTkLabel(root, text="Weather App", font=(None, 24))
     lbl_title.pack(pady=10)
@@ -46,60 +48,65 @@ def start_app():
     entry_city = ctk.CTkEntry(frame_input, placeholder_text="City name", width=200)
     entry_city.pack(side="left", padx=(0, 10))
 
-def on_fetch():
-    city = entry_city.get().strip()
-    if not city:
-        messagebox.showwarning("Input Error", "Please enter a city name.")
-        return
-    try:
-        data = fetch_weather(city)
-    except Exception as e:
-        messagebox.showerror("Fetch Error", str(e))
-        return
 
-    name = data.get("name", "Unknown")
-    main = data.get("main", {})
-    temp = main.get("temp", "N/A")
-    humidity = main.get("humidity", "N/A")
-    pressure = main.get("pressure", "N/A")
-    desc = data.get("weather", [{}])[0].get("description", "N/A").title()
-
-    display = (
-        f"City: {name}\n"
-        f"Temperature: {temp}F\n"
-        f"Condition: {desc}\n"
-        f"Humidity: {humidity}%\n"
-        f"Pressure: {pressure} hPa\n"
-    )
-
-    result_text.configure(state="normal")
-    result_text.delete("0.0", "end")
-    result_text.insert("0.0", display)
+        # RESULTS TEXT BOX
+    result_text = ctk.CTkTextbox(root, width=450, height=300)
     result_text.configure(state="disabled")
+    result_text.pack(pady=10, padx=20)
 
-    init_csv()
-    save_weather_entry(data)
+        # Extra frame for future results/buttons
+    results_frame = ctk.CTkFrame(root)
+    results_frame.pack(pady=10, padx=20, fill="x")
 
-btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
-btn_fetch.pack(side="left")
+    ####  FEATURE  ###
 
-  # CLEAR BUTTON
-def clear_fields():
+
+    def on_fetch():
+        city = entry_city.get().strip()
+        if not city:
+            messagebox.showwarning("Input Error", "Please enter a city name.")
+            return
+        try:
+            data = fetch_weather(city)
+        except Exception as e:
+            messagebox.showerror("Fetch Error", str(e))
+            return
+
+        name = data.get("name", "Unknown")
+        main = data.get("main", {})
+        temp = main.get("temp", "N/A")
+        humidity = main.get("humidity", "N/A")
+        pressure = main.get("pressure", "N/A")
+        desc = data.get("weather", [{}])[0].get("description", "N/A").title()
+
+        display = (
+            f"City: {name}\n"
+            f"Temperature: {temp}F\n"
+            f"Condition: {desc}\n"
+            f"Humidity: {humidity}%\n"
+            f"Pressure: {pressure} hPa\n"
+        )
+
+        result_text.configure(state="normal")
+        result_text.delete("0.0", "end")
+        result_text.insert("0.0", display)
+        result_text.configure(state="disabled")
+
+        init_csv()
+        save_weather_entry(data)
+
+
+    # CLEAR BUTTON
+    def clear_fields():
         entry_city.delete(0, "end")
         result_text.configure(state="normal")
         result_text.delete("0.0", "end")
         result_text.configure(state="disabled")
 
-clear_button = ctk.CTkButton(frame_input, text="Clear", command=clear_fields)
-clear_button.pack(side="left", padx=(10, 0))
+    btn_fetch = ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)
+    btn_fetch.pack(side="left")
 
-    # RESULTS TEXT BOX
-result_text = ctk.CTkTextbox(root, width=450, height=300)
-result_text.configure(state="disabled")
-result_text.pack(pady=10, padx=20)
+    clear_button = ctk.CTkButton(frame_input, text="Clear", command=clear_fields)
+    clear_button.pack(side="left", padx=(10, 0))
 
-    # Extra frame for future results/buttons
-results_frame = ctk.CTkFrame(root)
-results_frame.pack(pady=10, padx=20, fill="x")
-
-root.mainloop()
+    root.mainloop()
