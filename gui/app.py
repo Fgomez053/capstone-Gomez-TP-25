@@ -13,21 +13,6 @@ theme_path = Path(__file__).parent.parent / "data" / "my_ctkcolor.json"
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme(str(theme_path))
 
-
-#CSV path
-
-data_dir = Path(__file__).parent.parent / "data"
-csv_file = data_dir / "weather_history.csv"
-
-def init_csv():
-    os.makedirs(data_dir, exist_ok=True)
-    if not csv_file.exists():
-        with open(csv_file, mode="w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow([
-                "timestamp", "city", "temp_F", "humidity", "pressure", "description"
-            ])
-
 def start_app():
     # Builds the window
     root = ctk.CTk()
@@ -58,18 +43,25 @@ def start_app():
     results_frame = ctk.CTkFrame(root)
     results_frame.pack(pady=10, padx=20, fill="x")
 
+    # output = ctk.CTkFrame(root)
+    # output.pack(pady=20)
+
+    # location_lbl = ctk.CTkLabel(output, text="", font=("Helvetica", 18))
+    # location_lbl.grid(row=0, column=0, columnspan=2, pady=(0,10))
+
+
     ####  FEATURE  ###
 
 
     def on_fetch():
         city = entry_city.get().strip()
         if not city:
-            messagebox.showwarning("Input Error", "Please enter a city name.")
+            messagebox.showwarning("Input Error", "😒You forgot to enter a city name🙄.")
             return
         try:
             data = fetch_weather(city)
         except Exception as e:
-            messagebox.showerror("Fetch Error", str(e))
+            messagebox.showerror("Fetch Error", str("Check your spelling😒"))
             return
 
         name = data.get("name", "Unknown")
@@ -92,11 +84,11 @@ def start_app():
         result_text.insert("0.0", display)
         result_text.configure(state="disabled")
 
-        init_csv()
+        # init_csv()
         save_weather_entry(data)
 
 
-    # CLEAR BUTTON
+    # CLEAR BUTTON function
     def clear_fields():
         entry_city.delete(0, "end")
         result_text.configure(state="normal")
@@ -110,3 +102,126 @@ def start_app():
     clear_button.pack(side="left", padx=(10, 0))
 
     root.mainloop()
+
+
+# #######################################################
+
+# import customtkinter as ctk
+# from tkinter import messagebox
+# import requests
+# from io import BytesIO
+# from pathlib import Path
+# from PIL import Image
+# from customtkinter import CTkImage
+
+# from config import API_KEY
+# from core.api import fetch_weather
+# from core.storage import save_weather_entry
+# from features.dark_theme import create_dark_theme_toggle
+
+# def start_app():
+#     # ─── Theme setup ─────────────────────────────────────────────────────
+#     ctk.set_appearance_mode("System")
+#     theme_path = Path(__file__).parent.parent / "data" / "my_ctkcolor.json"
+#     ctk.set_default_color_theme(str(theme_path))
+
+#     # ─── Main window ─────────────────────────────────────────────────────
+#     root = ctk.CTk()
+#     root.title("Weather App")       # your original title
+#     root.geometry("600x500")
+
+#     # ─── Dark Mode toggle ─────────────────────────────────────────────────
+#     create_dark_theme_toggle(root)
+
+#     # ─── Input row ────────────────────────────────────────────────────────
+#     frame_input = ctk.CTkFrame(root)
+#     frame_input.pack(pady=10, padx=20, fill="x")
+
+#     entry_city = ctk.CTkEntry(
+#         frame_input,
+#         placeholder_text="City name",
+#         width=200
+#     )
+#     entry_city.pack(side="left", padx=(0, 10))
+
+#     fetch_btn = ctk.CTkButton(
+#         frame_input,
+#         text="submit"                # your original button text
+#     )
+#     fetch_btn.pack(side="left", padx=(0, 10))
+
+#     clear_btn = ctk.CTkButton(
+#         frame_input,
+#         text="Clear"                 # your original button text
+#     )
+#     clear_btn.pack(side="left")
+
+#     # ─── WEATHEROLOGY OUTPUT FRAME ────────────────────────────────────────
+#     output = ctk.CTkFrame(root)
+#     output.pack(pady=20)
+
+#     location_lbl = ctk.CTkLabel(
+#         output,
+#         text="",
+#         font=("Helvetica", 18)
+#     )
+#     location_lbl.grid(row=0, column=0, columnspan=2, pady=(0,10))
+
+#     temp_lbl = ctk.CTkLabel(
+#         output,
+#         text="",
+#         font=("Helvetica", 72, "bold")
+#     )
+#     temp_lbl.grid(row=1, column=0, sticky="w")
+
+#     icon_lbl = ctk.CTkLabel(
+#         output,
+#         text=""
+#     )
+#     icon_lbl.grid(row=1, column=1, padx=(20,0))
+
+#     # ─── Callback functions ───────────────────────────────────────────────
+#     def on_fetch():
+#         city = entry_city.get().strip()
+#         if not city:
+#             messagebox.showwarning("Input Error", "Please enter a city.")
+#             return
+#         try:
+#             data = fetch_weather(city)
+#         except Exception as e:
+#             messagebox.showerror("Fetch Error", str(e))
+#             return
+
+#         save_weather_entry(data)
+
+#         # Update location
+#         name    = data.get("name", "")
+#         country = data.get("sys", {}).get("country", "")
+#         location_lbl.configure(text=f"{name}, {country}")
+
+#         # Update temperature in °C
+#         f = data["main"].get("temp", 0)
+#         c = round((f - 32) * 5/9)
+#         temp_lbl.configure(text=f"{c}°C")
+
+#         # Fetch & display weather icon
+#         icon_id = data["weather"][0]["icon"]
+#         url     = f"http://openweathermap.org/img/wn/{icon_id}@4x.png"
+#         resp    = requests.get(url)
+#         img     = Image.open(BytesIO(resp.content)).resize((100,100))
+#         ctk_img = CTkImage(light_image=img, dark_image=img, size=(100,100))
+#         icon_lbl.configure(image=ctk_img)
+#         icon_lbl.image = ctk_img  # keep reference
+
+#     def clear_fields():
+#         entry_city.delete(0, "end")
+#         location_lbl.configure(text="")
+#         temp_lbl.configure(text="")
+#         icon_lbl.configure(image=None)
+#         icon_lbl.image = None
+
+#     # ─── Wire up buttons & start ─────────────────────────────────────────
+#     fetch_btn.configure(command=on_fetch)
+#     clear_btn.configure(command=clear_fields)
+
+#     root.mainloop()
