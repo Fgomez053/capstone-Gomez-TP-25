@@ -17,7 +17,38 @@ from config import API_KEY
 from core.api import fetch_weather
 from core.storage import save_weather_entry
 from features.dark_theme import create_dark_theme_toggle
-from features.history_tracker import create_history_button
+from features.tracking_button import create_tracking_button
+from features.activity_suggester import suggest_activity
+
+
+#helps keep result_text background on its own color theme
+def reset_result_bg(result_text):
+    """Set background color of result_text based on current theme."""
+    mode = ctk.get_appearance_mode()
+    if mode == "Dark":
+        result_text.configure(fg_color="#1a1a1a")
+    else:
+        result_text.configure(fg_color="#ffffff")
+
+# Add this helper function
+def get_temp_color(temp_f):
+    if temp_f < 32:
+        return "#0f89e6"  # icy blue
+    elif temp_f < 50:
+        return "#25a3eb"  # light sky blue
+    elif temp_f < 60:
+        return "#87faad"  # mint green
+    elif temp_f < 70:
+        return "#eae142"  # soft yellow
+    elif temp_f < 80:
+        return "#f06e6c"  # peach
+    elif temp_f < 90:
+        return "#f03709"  # coral
+    elif temp_f < 100:
+        return "#d40606"  # red-orange
+    else:
+        return "#110707"  # deep red
+
 
 def start_app():
     # Theme & color setup
@@ -52,12 +83,12 @@ def start_app():
     def on_fetch():
         city = entry_city.get().strip()
         if not city:
-            messagebox.showwarning("Input Error", "Please enter a city.")
+            messagebox.showwarning("Input Error", "🙄Please enter a city🙄.")
             return
         try:
             data = fetch_weather(city)
         except Exception as e:
-            messagebox.showerror("Fetch Error", str(e))
+            messagebox.showerror("Fetch Error", str("😒Check your spelling🙄"))
             return
 
         save_weather_entry(data)
@@ -69,6 +100,17 @@ def start_app():
             f"Pressure: {data['main'].get('pressure','N/A')} hPa\n"
             f"{data.get('weather',[{}])[0].get('description','').title()}"
         )
+        #activity suggester
+        weather_main = data.get("weather", [{}])[0].get("main", "")
+        activity = suggest_activity(weather_main)
+        display += f"\n\n🌟 Suggested Activity:\n{activity}"
+
+        temp = data["main"].get("temp")
+        if temp is not None:
+            color = get_temp_color(temp)
+            result_text.configure(fg_color=color)
+
+
         result_text.configure(state="normal")
         result_text.delete("0.0","end")
         result_text.insert("0.0", display)
@@ -78,6 +120,7 @@ def start_app():
         entry_city.delete(0, "end")
         result_text.configure(state="normal")
         result_text.delete("0.0", "end")
+        reset_result_bg(result_text)  # ✅ set default background for theme
         result_text.configure(state="disabled")
 
     # Buttons
@@ -85,8 +128,7 @@ def start_app():
         .pack(side="left", padx=(0,10))
     ctk.CTkButton(frame_input, text="Clear", command=clear_fields)\
         .pack(side="left", padx=(0,10))
-    create_history_button(frame_input, entry_city, result_text)
-
+    create_tracking_button(frame_input, entry_city, result_text)
     root.mainloop()
 
 if __name__ == "__main__":

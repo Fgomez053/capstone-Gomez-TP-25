@@ -137,3 +137,30 @@ def load_history(n=7) -> list[dict]:
         reader = csv.DictReader(f)
         rows = list(reader)
     return rows[-n:]
+
+def save_tracked_city_entry(data: dict):
+    """Append one record of weather to a separate tracking file."""
+    tracking_file = DATA_DIR / "tracking_button_data.csv"
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+    if not tracking_file.exists():
+        with open(tracking_file, "w", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerow([
+                "timestamp", "city", "temp_F",
+                "humidity", "pressure", "description"
+            ])
+
+    ts   = datetime.now().isoformat()
+    city = data.get("name", "")
+    m    = data.get("main", {})
+    desc = data.get("weather", [{}])[0].get("description", "")
+    with open(tracking_file, "a", newline="", encoding="utf-8") as f:
+        csv.writer(f).writerow([
+            ts,
+            city,
+            m.get("temp"),
+            m.get("humidity"),
+            m.get("pressure"),
+            desc
+        ])
+
