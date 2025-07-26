@@ -20,126 +20,6 @@ from features.dark_theme import create_dark_theme_toggle
 from features.tracking_button import create_tracking_button
 from features.activity_suggester import suggest_activity
 
-
-#helps keep result_text background on its own color theme
-# your helper 
-def reset_result_bg(result_text):
-    mode = ctk.get_appearance_mode()
-    result_text.configure(
-        fg_color = "#1a1a1a" if mode == "Dark" else "#ffffff"
-    )
-
-# Add this helper function
-def get_temp_color(temp_f):
-    if temp_f < 32:
-        return "#0f89e6"  # icy blue
-    elif temp_f < 50:
-        return "#25a3eb"  # light sky blue
-    elif temp_f < 60:
-        return "#87faad"  # mint green
-    elif temp_f < 70:
-        return "#eae142"  # soft yellow
-    elif temp_f < 80:
-        return "#f06e6c"  # peach
-    elif temp_f < 90:
-        return "#f03709"  # coral
-    elif temp_f < 100:
-        return "#d40606"  # red-orange
-    else:
-        return "#110707"  # deep red
-
-
-# def start_app():
-#     # Theme & color setup
-#     ctk.set_appearance_mode("System")
-#     theme_path = project_root / "data" / "my_ctkcolor.json"
-#     ctk.set_default_color_theme(str(theme_path))
-
-#     # Main window
-#     root = ctk.CTk()
-#     root.title("Weather App")
-#     root.geometry("700x400")
-
-#     # Dark mode toggle
-#     create_dark_theme_toggle(root)
-
-#     # Title
-#     ctk.CTkLabel(root, text="Weather App", font=(None,24)).pack(pady=(10,0))
-
-#     # Result textbox
-#     result_text = ctk.CTkTextbox(root, width=550, height=350)
-#     result_text.configure(state="disabled")
-#     result_text.pack(pady=10, padx=20, fill="both", expand=True)
-   
-#     # Input row
-#     frame_input = ctk.CTkFrame(root)
-#     frame_input.pack(pady=10, padx=20, fill="x")
-
-#     entry_city = ctk.CTkEntry(frame_input, placeholder_text="City name", width=200)
-#     entry_city.pack(side="left", padx=(0,10))
-
-
-#     tab_view = ctk.CTkTabview(root, width=600, height=300)
-#     tab_view.pack(pady=10, padx=20, fill="both", expand=True)
-
-#     tab_tracker = tab_view.add("City Tracker")  # New tracker tab
-
-
-#     # Callbacks
-#     def on_fetch():
-#         city = entry_city.get().strip()
-#         if not city:
-#             messagebox.showwarning("Input Error", "🙄Please enter a city🙄.")
-#             return
-#         try:
-#             data = fetch_weather(city)
-#         except Exception as e:
-#             messagebox.showerror("Fetch Error", str("😒Check your spelling🙄"))
-#             return
-
-#         save_weather_entry(data)
-
-#         display = (
-#             f"City: {data.get('name','')}\n"
-#             f"Temp: {data['main'].get('temp','N/A')}°F\n"
-#             f"Humidity: {data['main'].get('humidity','N/A')}%\n"
-#             f"Pressure: {data['main'].get('pressure','N/A')} hPa\n"
-#             f"{data.get('weather',[{}])[0].get('description','').title()}"
-#         )
-#         #activity suggester
-#         weather_main = data.get("weather", [{}])[0].get("main", "")
-#         activity = suggest_activity(weather_main)
-#         display += f"\n\n🌟 Suggested Activity:\n{activity}"
-
-#         temp = data["main"].get("temp")
-#         if temp is not None:
-#             color = get_temp_color(temp)
-#             result_text.configure(fg_color=color)
-
-
-#         result_text.configure(state="normal")
-#         result_text.delete("0.0","end")
-#         result_text.insert("0.0", display)
-#         result_text.configure(state="disabled")
-
-#     def clear_fields():
-#         entry_city.delete(0, "end")
-#         result_text.configure(state="normal")
-#         result_text.delete("0.0", "end")
-#         reset_result_bg(result_text)  # ✅ set default background for theme
-#         result_text.configure(state="disabled")
-
-#     # Buttons
-#     ctk.CTkButton(frame_input, text="Fetch Weather", command=on_fetch)\
-#         .pack(side="left", padx=(0,10))
-#     ctk.CTkButton(frame_input, text="Clear", command=clear_fields)\
-#         .pack(side="left", padx=(0,10))
-#     create_tracking_button(frame_input, entry_city, result_text)
-#     root.mainloop()
-
-# if __name__ == "__main__":
-#     start_app()
-
 def start_app():
     # Theme setup
     ctk.set_appearance_mode("System")
@@ -149,7 +29,7 @@ def start_app():
     # Main window
     root = ctk.CTk()
     root.title("Weather App")
-    root.geometry("750x550")
+    root.geometry("800x550")
 
     create_dark_theme_toggle(root)
 
@@ -157,19 +37,26 @@ def start_app():
     ctk.CTkLabel(root, text="Felix's Weather App", font=(None, 24)).pack(pady=(10, 0))
 
     # Shared Result Text
-    result_text = ctk.CTkTextbox(root, width=700, height=200)
-    result_text.configure(state="disabled")
-    result_text.pack(pady=10, padx=20)
-    # result_text = ctk.CTkTextbox(root, width=550, height=350)
+    # result_text = ctk.CTkTextbox(root, width=700, height=200)
     # result_text.configure(state="disabled")
-    # result_text.pack(pady=10, padx=20, fill="both", expand=True)
-    # reset_result_bg(result_text)   # set initial bg
+    # result_text.pack(pady=10, padx=20)
+    
+    # #Image
+    # image_label = ctk.CTkLabel(root, text="")  
+    # image_label.pack(pady=(10,0))
+        # --- Display Frame (holds icon & text side by side) ---   # NEW
+    display_frame = ctk.CTkFrame(root)                         # NEW
+    display_frame.pack(pady=10, padx=20, fill="both", expand=True)  # NEW
 
-    # now your feature switch, exactly same name and import
-    # create_dark_theme_toggle(
-    #     root,
-    #     on_toggle = lambda: reset_result_bg(result_text)
-    # )
+    # Image label (now a child of display_frame)            # NEW
+    image_label = ctk.CTkLabel(display_frame, text="")        # NEW (parent changed)
+    image_label.pack(side="left", padx=(0,10), pady=10)       # NEW (side="left")
+
+    # Result textbox (also in display_frame)                # UPDATED parent & packing
+    result_text = ctk.CTkTextbox(display_frame, width=500, height=300)  # UPDATED
+    result_text.configure(state="disabled")
+    result_text.pack(side="left", fill="both", expand=True)   # UPDATED (side & expand)
+
 
     # Tab Setup
     tab_view = ctk.CTkTabview(root, width=700, height=200)
@@ -208,12 +95,26 @@ def start_app():
         weather_main = data.get("weather", [{}])[0].get("main", "")
         activity = suggest_activity(weather_main)
         display += f"\n\n🌟 Suggested Activity:\n{activity}"
+         # 1) Grab the icon code from the API response
+        icon_code = data.get("weather", [{}])[0].get("icon", "")
+        if icon_code:
+            # 2) Download the icon PNG
+            url = f"http://openweathermap.org/img/wn/{icon_code}@2x.png"
+            resp = requests.get(url)
+            resp.raise_for_status()
+            img = Image.open(BytesIO(resp.content))
+
+            # 3) Wrap it in a CTkImage for CustomTkinter
+            ctk_icon = CTkImage(img, size=(280, 280))
+
+            # 4) Update the label
+            image_label.configure(image=ctk_icon, text="")
+            image_label.image = ctk_icon  # keep a reference
 
         result_text.configure(state="normal")
         result_text.delete("0.0", "end")
         result_text.insert("0.0", display)
         result_text.configure(state="disabled")
-        reset_result_bg(result_text)
 
     def clear_fields():
         entry_city.delete(0, "end")
