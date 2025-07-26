@@ -1,2 +1,10 @@
 timestamp,city,temp_F,humidity,pressure,description
 2025-07-24T17:18:01.108268,Seattle,78.62,53,1016,clear sky
+2025-07-24T17:58:14.149604,Los Angeles,75.56,61,1016,clear sky
+2025-07-25T16:43:53.033532,Los Angeles,75.15,62,1014,clear sky
+2025-07-25T17:00:51.941465,Los Angeles,74.35,62,1014,clear sky
+2025-07-25T17:40:12.973600,Los Angeles,74.41,62,1014,clear sky
+2025-07-25T17:49:10.001622,Seattle,70.11,64,1014,clear sky
+2025-07-25T22:21:08.622966,Los Angeles,63.43,82,1015,clear sky
+2025-07-25T22:30:29.288234,Los Angeles,63.34,81,1015,clear sky
+2025-07-25T23:32:56.299284,Los Angeles,62.31,83,1016,clear sky
