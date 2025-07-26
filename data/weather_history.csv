@@ -134,3 +134,11 @@ timestamp,city,temp_F,humidity,pressure,description
 2025-07-24T17:17:59.020017,Seattle,78.62,53,1016,clear sky
 2025-07-24T17:22:49.116840,Houston,92.03,57,1013,clear sky
 2025-07-24T17:23:00.259887,Los Angeles,77.74,57,1016,clear sky
+2025-07-24T17:58:11.467702,Los Angeles,75.56,61,1016,clear sky
+2025-07-24T17:58:12.629149,Los Angeles,75.56,61,1016,clear sky
+2025-07-25T17:40:54.840771,Los Angeles,74.41,62,1014,clear sky
+2025-07-25T22:22:38.711406,Los Angeles,63.43,82,1015,clear sky
+2025-07-25T22:30:48.008506,Los Angeles,63.34,81,1015,clear sky
+2025-07-25T23:02:05.062334,Los Angeles,62.73,84,1016,clear sky
+2025-07-25T23:02:33.002059,Los Angeles,62.73,84,1016,clear sky
+2025-07-25T23:32:42.822393,Los Angeles,62.31,83,1016,clear sky

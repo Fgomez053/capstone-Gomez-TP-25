@@ -164,3 +164,17 @@ def save_tracked_city_entry(data: dict):
             desc
         ])
 
+def load_tracked_history(n=7) -> list[dict]:
+    """
+    Return the last `n` entries from tracking_button_data.csv
+    """
+    tracking_file = DATA_DIR / "tracking_button_data.csv"
+    if not tracking_file.exists():
+        return []
+
+    with open(tracking_file, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+    return rows[-n:]
+
+
