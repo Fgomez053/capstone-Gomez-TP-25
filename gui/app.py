@@ -138,6 +138,7 @@ def start_app():
     entry_tracked_city.pack(pady=(0, 10))
 
     create_tracking_button(frame_tracker, entry_tracked_city, result_text)
+    
 
     # Day range buttons
     def create_day_range_button(parent, result_text, days):
@@ -157,11 +158,40 @@ def start_app():
             result_text.configure(state="disabled")
         return ctk.CTkButton(parent, text=f"Show Last {days} Days", command=on_click)
 
+    # … right after create_tracking_button(frame_tracker, …) …
+
+    from core.storage import load_tracked_history
+
+    # Helper to display N‑day history
+    def show_tracked_history(days: int):
+        history = load_tracked_history(days)
+        if not history:
+            messagebox.showinfo("No Data", f"No tracked data for last {days} days.")
+            return
+
+        result_text.configure(state="normal")
+        result_text.delete("0.0", "end")
+        result_text.insert("0.0", f"📊 Last {days} Tracked Entries:\n\n")
+        for row in history[-days:]:
+            result_text.insert(
+                "end",
+                f"{row['timestamp'][:10]} — {row['city']} — "
+                f"{row['temp_F']}°F, {row['humidity']}% humidity\n"
+            )
+        result_text.configure(state="disabled")
+
+    # Create three nicely‑sized buttons
     day_btn_frame = ctk.CTkFrame(frame_tracker)
     day_btn_frame.pack(pady=10)
 
-    create_day_range_button(day_btn_frame, result_text, 3).pack(side="left", padx=5)
-    create_day_range_button(day_btn_frame, result_text, 5).pack(side="left", padx=5)
-    create_day_range_button(day_btn_frame, result_text, 7).pack(side="left", padx=5)
+    for days in (3, 5, 7):
+        ctk.CTkButton(
+            day_btn_frame,
+            text=f"Show Last {days} Days",
+            width=140,                     # controls the pill shape
+            height=32,                     # optional: set button height
+            corner_radius=8,               # optional: roundness
+            command=lambda d=days: show_tracked_history(d)
+        ).pack(side="left", padx=5)
 
     root.mainloop()
