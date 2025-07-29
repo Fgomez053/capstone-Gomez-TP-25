@@ -6,7 +6,7 @@ project_root = Path(__file__).parent.parent.resolve()
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-import customtkinter as ctk
+import customtkinter as ct
 from tkinter import messagebox
 import requests
 from io import BytesIO
@@ -19,6 +19,8 @@ from core.storage import save_weather_entry
 from features.dark_theme import create_dark_theme_toggle
 from features.tracking_button import create_tracking_button
 from features.activity_suggester import suggest_activity
+from Group3.group_feature import create_group_feature_tab
+
 
 def start_app():
     # Theme setup
@@ -29,26 +31,18 @@ def start_app():
     # Main window
     root = ctk.CTk()
     root.title("Weather App")
-    root.geometry("800x550")
+    root.geometry("800x700")
 
     create_dark_theme_toggle(root)
 
     # Title
     ctk.CTkLabel(root, text="Felix's Weather App", font=(None, 24)).pack(pady=(10, 0))
 
-    # Shared Result Text
-    # result_text = ctk.CTkTextbox(root, width=700, height=200)
-    # result_text.configure(state="disabled")
-    # result_text.pack(pady=10, padx=20)
-    
-    # #Image
-    # image_label = ctk.CTkLabel(root, text="")  
-    # image_label.pack(pady=(10,0))
-        # --- Display Frame (holds icon & text side by side) ---   # NEW
-    display_frame = ctk.CTkFrame(root)                         # NEW
-    display_frame.pack(pady=10, padx=20, fill="both", expand=True)  # NEW
+        # --- Display Frame (holds icon & text side by side) ---   # 
+    display_frame = ctk.CTkFrame(root)                         #
+    display_frame.pack(pady=10, padx=20, fill="both", expand=True)  #
 
-    # Image label (now a child of display_frame)            # NEW
+    # Image label (now a child of display_frame)            #
     image_label = ctk.CTkLabel(display_frame, text="")        # NEW (parent changed)
     image_label.pack(side="left", padx=(0,10), pady=10)       # NEW (side="left")
 
@@ -64,8 +58,12 @@ def start_app():
 
     tab_main = tab_view.add("Main")
     tab_tracker = tab_view.add("City Tracker")
+    tab_group = tab_view.add("Group Feature")
+    create_group_feature_tab(tab_group)
 
-    # --- Main Tab Content --- #
+
+
+    #Main Tab Content
     frame_input = ctk.CTkFrame(tab_main)
     frame_input.pack(pady=10, padx=20)
 
@@ -127,7 +125,7 @@ def start_app():
     ctk.CTkButton(frame_input, text="Clear", command=clear_fields)\
         .pack(side="left", padx=(0, 10))
 
-    # --- City Tracker Tab Content --- #
+    # --- City Tracker Tab Content 
     from features.tracking_button import create_tracking_button
     from core.storage import load_tracked_history
 
@@ -158,40 +156,11 @@ def start_app():
             result_text.configure(state="disabled")
         return ctk.CTkButton(parent, text=f"Show Last {days} Days", command=on_click)
 
-    # … right after create_tracking_button(frame_tracker, …) …
-
-    from core.storage import load_tracked_history
-
-    # Helper to display N‑day history
-    def show_tracked_history(days: int):
-        history = load_tracked_history(days)
-        if not history:
-            messagebox.showinfo("No Data", f"No tracked data for last {days} days.")
-            return
-
-        result_text.configure(state="normal")
-        result_text.delete("0.0", "end")
-        result_text.insert("0.0", f"📊 Last {days} Tracked Entries:\n\n")
-        for row in history[-days:]:
-            result_text.insert(
-                "end",
-                f"{row['timestamp'][:10]} — {row['city']} — "
-                f"{row['temp_F']}°F, {row['humidity']}% humidity\n"
-            )
-        result_text.configure(state="disabled")
-
-    # Create three nicely‑sized buttons
     day_btn_frame = ctk.CTkFrame(frame_tracker)
     day_btn_frame.pack(pady=10)
 
-    for days in (3, 5, 7):
-        ctk.CTkButton(
-            day_btn_frame,
-            text=f"Show Last {days} Days",
-            width=140,                     # controls the pill shape
-            height=32,                     # optional: set button height
-            corner_radius=8,               # optional: roundness
-            command=lambda d=days: show_tracked_history(d)
-        ).pack(side="left", padx=5)
+    create_day_range_button(day_btn_frame, result_text, 3).pack(side="left", padx=5)
+    create_day_range_button(day_btn_frame, result_text, 5).pack(side="left", padx=5)
+    create_day_range_button(day_btn_frame, result_text, 7).pack(side="left", padx=5)
 
     root.mainloop()
