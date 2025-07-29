@@ -162,3 +162,15 @@ timestamp,city,temp_F,humidity,pressure,description
 2025-07-27T10:17:48.556167,Los Angeles,70.88,71,1015,broken clouds
 2025-07-27T10:18:38.393431,Los Angeles,70.88,71,1015,broken clouds
 2025-07-27T10:20:51.305547,Los Angeles,70.88,71,1015,broken clouds
+2025-07-27T10:39:34.217072,Los Angeles,71.92,69,1015,scattered clouds
+2025-07-28T23:47:28.769938,Tahiti,68.09,79,1018,scattered clouds
+2025-07-28T23:47:42.515979,Los Angeles,63.97,85,1017,few clouds
+2025-07-29T00:56:57.858660,Los Angeles,63.16,84,1017,clear sky
+2025-07-29T00:57:23.653924,Tokyo,92.32,52,1001,few clouds
+2025-07-29T00:57:40.701515,Cairo,86.76,54,1008,clear sky
+2025-07-29T00:58:00.751291,Moscow,81.34,48,1014,clear sky
+2025-07-29T00:58:03.570567,Moscow,81.34,48,1014,clear sky
+2025-07-29T00:58:05.590849,Moscow,81.34,48,1014,clear sky
+2025-07-29T00:58:06.300975,Moscow,81.34,48,1014,clear sky
+2025-07-29T00:58:41.102101,Anchorage,62.74,75,1018,clear sky
+2025-07-29T00:59:11.197987,Cananea,71.24,55,1018,scattered clouds
