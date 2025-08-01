@@ -13,6 +13,3 @@ timestamp,city,temp_F,humidity,pressure,description
 2025-07-28T23:05:11.553068,Los Angeles,64.13,84,1017,few clouds
 2025-07-28T23:05:33.207976,Los Angeles,64.47,84,1017,scattered clouds
 2025-07-29T00:59:55.293572,Los Angeles,63.16,84,1017,clear sky
-2025-08-01T02:02:12.408751,Los Angeles,64.38,85,1016,clear sky
-2025-08-01T02:51:38.876775,Los Angeles,64.08,85,1016,clear sky
-2025-08-01T02:57:22.395685,Los Angeles,63.81,86,1016,clear sky
