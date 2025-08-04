@@ -21,3 +21,25 @@ timestamp,city,temp_F,humidity,pressure,description
 2025-07-13T11:18:09.721537,Los Angeles,68.14,81,1016,mist
 2025-07-13T11:35:48.781325,Las Vegas,101.08,13,1012,haze
 2025-07-13T14:56:56.242117,San Francisco,65.14,76,1015,few clouds
+2025-08-01T17:04:48.251328,Los Angeles,78.58,59,1017,clear sky
+2025-08-01T17:07:46.002580,Los Angeles,78.58,59,1017,clear sky
+2025-08-03T05:15:06.875661,Los Angeles,63.1,89,1016,overcast clouds
+2025-08-03T05:15:23.483999,Los Angeles,63.1,89,1016,overcast clouds
+2025-08-03T05:15:25.520250,Los Angeles,63.1,89,1016,overcast clouds
+2025-08-03T13:34:03.416531,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:34:12.265285,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:34:18.871006,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:34:20.396721,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:34:20.964721,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:34:21.647959,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:36:14.457370,Los Angeles,80.2,57,1015,clear sky
+2025-08-03T13:37:33.619598,Los Angeles,80.92,57,1015,clear sky
+2025-08-03T13:37:35.389469,Los Angeles,80.92,57,1015,clear sky
+2025-08-03T13:37:37.498486,Los Angeles,80.92,57,1015,clear sky
+2025-08-03T13:54:42.532414,Los Angeles,81.25,56,1015,clear sky
+2025-08-03T14:11:18.865560,Los Angeles,82.4,53,1015,clear sky
+2025-08-03T14:12:31.257870,Los Angeles,82.4,53,1015,clear sky
+2025-08-03T14:12:32.205785,Los Angeles,82.4,53,1015,clear sky
+2025-08-03T14:15:44.570489,Los Angeles,82.65,53,1015,clear sky
+2025-08-03T16:16:06.870208,Los Angeles,82.94,51,1014,clear sky
+2025-08-04T10:32:17.869888,Los Angeles,74.7,69,1014,haze

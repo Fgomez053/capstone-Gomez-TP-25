@@ -3,3 +3,5 @@ pillow
 customtkinter
 dotenv
 pandas
+matplotlib
+numpy
